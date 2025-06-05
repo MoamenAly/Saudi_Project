@@ -1,0 +1,1 @@
+﻿Assets/Tent/Sh_02.unity
