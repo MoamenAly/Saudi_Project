@@ -102,13 +102,14 @@ public class RestOnUnGrab : MonoBehaviour
         }
         else
         {
-            if (ResetState == ResetState.Dynamic)
-            {
-                //Debug.Log("back to default" + gameObject.name);
-                if (grabbable == null || grabbable.enabled == false || grabbable.BeingHeld) return;
-                float diffenceInY = transform.position.y - defaultPosition.y;
 
-                if (Mathf.Abs(diffenceInY) < 0.05)
+            //Debug.Log("back to default" + gameObject.name);
+            if (grabbable == null || grabbable.enabled == false || grabbable.BeingHeld) return;
+            float diffenceInY = transform.position.y - defaultPosition.y;
+
+            if (Mathf.Abs(diffenceInY) < 0.05)
+            {
+                if (ResetState == ResetState.Dynamic)
                 {
                     float y = defaultPosition.y;
                     defaultPosition = transform.position;
@@ -122,29 +123,29 @@ public class RestOnUnGrab : MonoBehaviour
 
                     return;
                 }
-                else
-                {
-                    if (grabbable == null || grabbable.enabled == false || grabbable.BeingHeld) return;
-                    transform.localPosition = defaultPosition;
-                    transform.localRotation = defaultRoation;
-                }
-            }
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
-
-            if (overrideedTransform != null)
-            {
-                transform.rotation = defaultRoation;
-                transform.position = overrideedTransform.position;
             }
             else
             {
-                transform.rotation = defaultRoation;
-                transform.position = defaultPosition + Vector3.up * 0.01f;
+                if (grabbable == null || grabbable.enabled == false || grabbable.BeingHeld) return;
+                transform.localPosition = defaultPosition;
+                transform.localRotation = defaultRoation;
             }
         }
+        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.angularVelocity = Vector3.zero;
 
+        if (overrideedTransform != null)
+        {
+            transform.rotation = defaultRoation;
+            transform.position = overrideedTransform.position;
+        }
+        else
+        {
+            transform.rotation = defaultRoation;
+            transform.position = defaultPosition + Vector3.up * 0.01f;
+        }
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
