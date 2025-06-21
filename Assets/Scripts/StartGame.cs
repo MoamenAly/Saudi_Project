@@ -21,6 +21,8 @@ public class StartGame : MonoBehaviour
     }
     IEnumerator WaitSound()
     {
+        player.GetComponent<CharacterController>().enabled = false;
+        audioSource.Play();
         yield return new WaitUntil(() => !audioSource.isPlaying);
         player.GetComponent<CharacterController>().enabled = true;
     }
