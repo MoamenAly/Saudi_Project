@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections;
+using BNG;
 
 public class BackgroundVoiceController : MonoBehaviour
 {
     AudioSource backgroundVoice; // Assign the AudioSource in the inspector
     string playerTag = "Player"; // Tag of the player object (set this in your Unity Editor)
-
+    bool firstplay = false;
 
     private void Start()
     {
@@ -18,9 +20,24 @@ public class BackgroundVoiceController : MonoBehaviour
             // Play the background voice
             if (!backgroundVoice.isPlaying)
             {
-                backgroundVoice.Play();
+                if (!firstplay)
+                {
+                    firstplay = true;
+                    StartCoroutine(waitfirstsound(other));
+                }
+                else
+                {
+                    backgroundVoice.Play();
+                }
             }
         }
+    }
+    IEnumerator waitfirstsound(Collider other)
+    {
+        backgroundVoice.Play();
+        other.gameObject.GetComponent<SmoothLocomotion>().UpdateMovement = false;
+        yield return new WaitUntil(() => !backgroundVoice.isPlaying);
+        other.gameObject.GetComponent<SmoothLocomotion>().UpdateMovement = true;
     }
 
     private void OnTriggerExit(Collider other)

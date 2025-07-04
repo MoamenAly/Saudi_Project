@@ -1,3 +1,4 @@
+using BNG;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,9 @@ public class StartGame : MonoBehaviour
     }
     IEnumerator WaitSound()
     {
+        player.GetComponent<SmoothLocomotion>().UpdateMovement = false;
+        audioSource.Play();
         yield return new WaitUntil(() => !audioSource.isPlaying);
-        player.GetComponent<CharacterController>().enabled = true;
+        player.GetComponent<SmoothLocomotion>().UpdateMovement = true;
     }
 }

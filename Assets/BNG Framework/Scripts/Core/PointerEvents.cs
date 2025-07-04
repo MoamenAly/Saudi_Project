@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace BNG {
-    public class PointerEvents : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
+namespace BNG
+{
+    public class PointerEvents : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+    {
 
         [Header("Maximium Distance")]
         [Tooltip("Maximum Distance this object can be from the UIPointer to be considered valid and receive events")]
@@ -12,7 +14,7 @@ namespace BNG {
 
         [Header("Enable Events")]
         [Tooltip("If True then the Unity Events below will be sent. Set to False if you need to disable sending pointer events.")]
-        public bool Enabled = true;
+        public bool Enabled = false;
 
         [Header("Unity Events : ")]
         public PointerEventDataEvent OnPointerClickEvent;
@@ -20,52 +22,76 @@ namespace BNG {
         public PointerEventDataEvent OnPointerExitEvent;
         public PointerEventDataEvent OnPointerDownEvent;
         public PointerEventDataEvent OnPointerUpEvent;
+        private void Start()
+        {
 
-        public virtual void OnPointerClick(PointerEventData eventData) {
+        }
+        public virtual void OnPointerClick(PointerEventData eventData)
+        {
+
+            if (!Enabled) return;
+
             // Don't call events if exceeded distance
-            if(DistanceExceeded(eventData)) {
+            if (DistanceExceeded(eventData))
+            {
                 return;
             }
 
             OnPointerClickEvent?.Invoke(eventData);
         }
 
-        public virtual void OnPointerEnter(PointerEventData eventData) {
+        public virtual void OnPointerEnter(PointerEventData eventData)
+        {
+            if (!Enabled) return;
+
             // Don't call events if exceeded distance
-            if (DistanceExceeded(eventData)) {
+            if (DistanceExceeded(eventData))
+            {
                 return;
             }
 
             OnPointerEnterEvent?.Invoke(eventData);
         }
 
-        public virtual void OnPointerExit(PointerEventData eventData) {
+        public virtual void OnPointerExit(PointerEventData eventData)
+        {
+            if (!Enabled) return;
+
             // Can call OnPointerExit events even if exceeded distance
             OnPointerExitEvent?.Invoke(eventData);
         }
 
 
-        public virtual void OnPointerDown(PointerEventData eventData) {
+        public virtual void OnPointerDown(PointerEventData eventData)
+        {
+            if (!Enabled) return;
+
             // Don't call events if exceeded distance
-            if (DistanceExceeded(eventData)) {
+            if (DistanceExceeded(eventData))
+            {
                 return;
             }
 
             OnPointerDownEvent?.Invoke(eventData);
         }
 
-        public virtual void OnPointerUp(PointerEventData eventData) {
+        public virtual void OnPointerUp(PointerEventData eventData)
+        {
+            if (!Enabled) return;
+
             // Can call OnPointerUp events even if exceeded distance
             OnPointerUpEvent?.Invoke(eventData);
         }
 
-        public virtual bool DistanceExceeded(PointerEventData eventData) {
-
-            if(eventData == null) {
+        public virtual bool DistanceExceeded(PointerEventData eventData)
+        {
+            if (eventData == null)
+            {
                 return false;
             }
 
-            if(eventData.pointerCurrentRaycast.distance > MaxDistance) {
+            if (eventData.pointerCurrentRaycast.distance > MaxDistance)
+            {
                 return true;
             }
 
